@@ -33,28 +33,6 @@ async function run() {
     const cartCollections = client.db('bistroDb').collection('carts');
     const userCollections = client.db('bistroDb').collection('users');
 
-    app.get('/menu', async (req, res) => {
-      const result = await menuCollections.find().toArray();
-      res.send(result)
-    })
-
-    app.post('/menu', verifyToken, verifyAdmin, async (req, res) => {
-      const item = req.body;
-      const result = await menuCollections.insertOne(item);
-      res.send(result)
-    })
-
-    app.get('/reviews', async (req, res) => {
-      const result = await reviewCollections.find().toArray();
-      res.send(result)
-    })
-
-    app.get('/carts', async (req, res) => {
-      const email = req.query.email;
-      const query = { email: email };
-      const result = await cartCollections.find(query).toArray();
-      res.send(result)
-    })
 
     const verifyToken = (req, res, next) => {
       console.log(req.headers)
@@ -83,6 +61,30 @@ async function run() {
       console.log('for verify admin', isAdmin)
       next();
     }
+
+
+    app.get('/menu', async (req, res) => {
+      const result = await menuCollections.find().toArray();
+      res.send(result)
+    })
+
+    app.post('/menu', verifyToken, verifyAdmin, async (req, res) => {
+      const item = req.body;
+      const result = await menuCollections.insertOne(item);
+      res.send(result)
+    })
+
+    app.get('/reviews', async (req, res) => {
+      const result = await reviewCollections.find().toArray();
+      res.send(result)
+    })
+
+    app.get('/carts', async (req, res) => {
+      const email = req.query.email;
+      const query = { email: email };
+      const result = await cartCollections.find(query).toArray();
+      res.send(result)
+    })
 
     app.get('/users', verifyToken, async (req, res) => {
 
